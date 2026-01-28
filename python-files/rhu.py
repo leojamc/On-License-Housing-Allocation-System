@@ -1,5 +1,8 @@
 #CODE BY LEO MCCAFFERTY W24046037
 #rhu.py
+
+from location_handling import ContactInfo
+
 class Beds:
     """
     Class specifically for storing info about beds and holding bed related
@@ -58,14 +61,40 @@ class RHU:
     Class for handling information related to RHU's (Rehabilitating Housing Units)
 
     Attributes:
-        location (RHULocation class): Co-ordinate location of the RHU
-        address (str): Address in the format Building num/City/Postcode e.g "23 Cavendish Road/Newcastle upon Tyne/ NE2 1TZ"
-        phone (str): Phone number for the RHU in the format +00PHONENUMBER e.g +4402994325092
-        email (str): Email address for the RHU e.g rhu@rhu.com
-        contact (str): Person to contact in regards to the RHU e.g "Leo McCafferty"
+        contact_details (ContactDetails class)
         management (str): Management in charge of the RHU with email in the form NAME/EMAIL e.g "MGMT/mgmg@mgmg.com
         licensee_list (list): List of licensee ID's for licensee's currently staying in the RHU e.g ["RHF56", "RHDH56" ...]
         notes (list): List of notes related to the RHU
     """
-    def __init__(self):
-        pass
+    def __init__(self, location: list, location_type: str, address: str, phone: str, email: str, contact: str, management: str, licensee_list: list, notes: list): #Initialiser for RHU
+        self.__contact_details = ContactInfo(location, location_type, address, phone, email, contact)
+        self.__management = management
+        self.__licensee_list = licensee_list
+        self.__notes = notes
+    def get_contact_details(self): #Getter for contact_details
+        return self.__contact_details
+    def set_contact_details(self, updated_contact_details): #Setter for contact details
+        assert type(updated_contact_details) == ContactInfo, "Contact details set failed, input not in type ContactInfo class"
+        self.__contact_details = updated_contact_details
+    def get_management(self): #Getter for management
+        return self.__management
+    def set_management(self, new_management): #Setter for management
+        assert type(new_management) == list, "Management set failed, input type not string" #Checks input type is string
+    def get_licensee_list(self): #Getter for licensee_list
+        return self.__licensee_list
+    def add_licensee(self, new_licensee_id): #Adds a new licensee to the list
+        assert type(new_licensee_id) == str, "Add_licensee failed because input was not type str" #Checks input type is string
+        self.__licensee_list.append(new_licensee_id)
+    def remove_licensee(self, licensee_id_to_remove): #Removes a licensee from the list
+        assert type(licensee_id_to_remove) == str, "Remove licensee failed because input type was not str" #Checks input type is string
+        assert self.__licensee_list.find(licensee_id_to_remove) != -1, "Remove licensee failed because licensee id not found in licensee_list" #Checks licensee id is in licensee_list
+        self.__licensee_list.remove(licensee_id_to_remove) #Removes licensee from list
+    def get_notes(self): #Getter for notes
+        return self.__notes
+    def add_note(self, new_note): #Adds note to notes
+        assert type(new_note) == str, "Add note failed because input is not string type" #Checks input is string type
+        self.__notes.append(new_note) #Adds note
+    def remove_note(self, note_index): #Removes note at specified index
+        assert type(note_index) == int, "Remove note failed because input is not int type" #Checks input is int type
+        assert note_index < len(self.__notes), "Remove note failed because index is outside notes list" #Checks if index specified is valid
+        self.__notes.pop(note_index) #Removes note at specified index
