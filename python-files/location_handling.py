@@ -63,6 +63,56 @@ class Region_Info:
         co_ordinate_distance = miles*self.__miles_ratio #Multiplies miles input by miles_ratio to find new co-ordinate distance equivalent
         return co_ordinate_distance
 
+class ContactInfo:
+    """
+    Class to store and query generic contact info
+    
+    Attributes:
+        location (Location class or one of its subclasses): Co-ordinate location of the RHU
+        location_type (str): Decides what type the location is stored as, one of either "License", "RHU" or "POI"
+        address (str): Address in the format Building num/City/Postcode e.g "23 Cavendish Road/Newcastle upon Tyne/ NE2 1TZ"
+        phone (str): Phone number in the format +00PHONENUMBER e.g +4402994325092
+        email (str): Email address e.g rhu@rhu.com
+        contact (str): Person to contact e.g "Leo McCafferty"
+    """
+    def __init__(self, location: list, location_type: str, address: str, phone: str, email: str, contact: str): #Initialiser for ContactInfo
+        self.__location_type = location_type
+        if self.__location_type == "Licensee":
+            self.__location = LicenseeLocation(location[0], location[1])
+        elif self.__location_type == "RHU":
+            self.__location = RHULocation(location[0], location[1])
+        elif self.__location == "POI":
+            self.__location = POILocation(location[0], location[1])
+        self.__address = address
+        self.__phone = phone
+        self.__email = email
+        self.__contact = contact
+    def get_location(self): #Getter for co-ordinates
+        return self.__location.get_co_ordinates() #Calls Location's get co_ordinates class to return a list format co-ordinates
+    def set_location(self, new_co_ordinates): #Setter for location
+        assert type(new_co_ordinates) == list, "set_location setter failed because input was not list format" #Checks input is in list format
+        self.__location.set_co_ordinates(new_co_ordinates) #Calls Location classes set_co_ordinates function
+    def get_address(self): #Getter for address
+        return self.__address
+    def set_address(self, new_address): #Setter for address
+        assert type(new_address) == str, "set_address failed because input was not string format" #Checks input is in string format
+        self.__address = new_address
+    def get_phone(self): #Getter for phone
+        return self.__phone
+    def set_phone(self, new_phone): #Setter for phone
+        assert type(new_phone) == str, "set_phone failed because input was not string format" #Checks input is in string format
+        self.__phone = new_phone
+    def get_email(self): #Getter for email
+        return self.__email
+    def set_email(self, new_email): #Setter for email
+        assert type(new_email) == str, "set_email failed because input was not string format" #Checks input is in string format
+        self.__email = new_email
+    def get_contact(self): #Getter for contact
+        return self.__contact
+    def set_contact(self, new_contact): #Setter for contact
+        assert type(new_contact) == str, "set_contact failed because input was not string format" #Checks input is in string format
+        self.__contact = new_contact
+
 class Location:
     """
     Class for holding generic location data
