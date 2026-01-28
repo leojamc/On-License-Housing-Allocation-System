@@ -156,3 +156,20 @@ class RHULocation(Location):
         assert type(new_is_full) == bool #Checks if input type is boolean
         self.__is_full = new_is_full
 
+class POILocation(Location):
+    """
+    Class for holding location data specific to a POI, inherits from Location
+
+    Attributes:
+        Inherits all attributes from Location
+        POI_ID (str): The ID of the POI associated with the location
+        POI_type (str): The type of the POI, either "School", "Person" or other, where other is a string briefly describing the POI
+    """
+    def __init__(self, X: float, Y: float, POI_ID: str, POI_type: str): #Initialiser for POILocation, uses super() to inherit Locations attributes and methods
+        super().__init__(X, Y)
+        self.__POI_ID = POI_ID
+        self.__POI_type = POI_type
+    def get_POI_ID(self): #Getter for POI_ID, note no setter as ID should not change
+        return self.__POI_ID
+    def get_POI_type(self): #Getter for POI_type, note no setter as type should not change, deleting this object and creating a new one is instead encouraged for situational changes
+        return self.__POI_type
