@@ -122,7 +122,7 @@ class LicenseeLocation(Location):
         licensee_location_status (str): The status of the location of the licensee, either "Prison", "Home" or "RHU"
         licensee_ID (str): The ID of the licensee associated with the location e.g "ETJP45"
     """
-    def __init__(self, X: float, Y: float, licensee_location_status: str, licensee_ID: str): #Initialiser for LicenseeLocation, uses super() to inherit Location's methods
+    def __init__(self, X: float, Y: float, licensee_location_status: str, licensee_ID: str): #Initialiser for LicenseeLocation, uses super() to inherit Locations methods
         super().__init__(X, Y)
         self.__licensee_location_status = licensee_location_status
         self.__licenesee_ID = licensee_ID
@@ -132,5 +132,27 @@ class LicenseeLocation(Location):
         assert type(new_location_status) == str, "Location status set failed because type inputted was not string" #Checks input type is string
         assert new_location_status == "Prison" or new_location_status == "Home" or new_location_status == "RHU", "New location status is not one of 3 valid options" #Checks that input is one of 3 valid options
         self.__licensee_location_status = new_location_status
-    def get_licensee_ID(self): #Setter for licensee_ID
+    def get_licensee_ID(self): #Getter for licensee_ID, note no setter as licensee_ID is used to sort locations
         return self.__licenesee_ID
+    
+class RHULocation(Location):
+    """
+    Class for holding location data specific to an RHU, inherits from Location
+
+    Attributes:
+        Inherits all attributes from Location
+        RHU_ID (str): The ID of the RHU associated with the location
+        is_full (bool): Whether or not the RHU is full e.g False
+    """
+    def __init__(self, X: float, Y: float, RHU_ID: str, is_full: bool): #Initialiser for RHULocation, uses super() to inherit Locations attributes and methods
+        super().__init__(X, Y)
+        self.__RHU_ID = RHU_ID
+        self.__is_full = is_full
+    def get_RHU_ID(self): #Getter for RHU_ID, note there is no setter as RHU_ID is used to sort locations
+        return self.__RHU_ID
+    def get_is_full(self): #Getter for is_full
+        return self.__is_full
+    def set_is_full(self, new_is_full): #Setter fpr is_full
+        assert type(new_is_full) == bool #Checks if input type is boolean
+        self.__is_full = new_is_full
+
