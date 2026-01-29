@@ -53,7 +53,7 @@ contact_list.append(durham_prison_contact)
 name_list = []
 surname_list = []
 street_name_list = []
-with open("data/name_dataset.csv", "r", encoding='utf-8') as file: #Inputs data from name_dataset into lists name_list and surname_list
+with open("data/name_address_dataset.csv", "r", encoding='utf-8') as file: #Inputs data from name_dataset into lists name_list and surname_list
     for line_number, line in enumerate(file, start = 1):
         line = line.strip() #Strips whitespace from line
         stripped_line = line.split(",")
