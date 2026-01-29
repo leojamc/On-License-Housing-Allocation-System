@@ -20,11 +20,23 @@ def random_float(lower_boundary, upper_boundary):
     decimal_element = random.random()
     return float(integer_element) + decimal_element
 
-rhu_layout = list(0 , 0.00 , 0 , 0 , 0 , 0 , 0 ) #Info key, Cost per bed, Capacity, Emergency capacity, Short term beds, Location, Notes Key
+rhu_layout = list(0 , 0.00 , 0 , 0 , 0 , 0) #Info key, Cost per bed, Capacity, Emergency capacity, Short term beds, Location
 rhu_list = [] #List containing all RHU's being made
 
+poi_layout = list(0, "") #Info key, place significance
+place_significance_dataset = ["Person", "School", "Public Order"]
+poi_list = []
+
+location_layout = list(0, "", 0, [0,0], 0, 0) #Location key, Location type, contact key, co-ordinates, info key, notes key
+location_list = []
+durham_prison_poi = [1, "Prison"]
+poi_list.append(durham_prison_poi)
+durham_prison_location = [1, "POI", 1, [350, 350], 1, 1] #Generates durham prison as a constant data entry
+location_list.append(durham_prison_location)
+
+
 def generate_RHU(num):
-    for incremental in range(1, num):
+    for incremental in range(2, num+1):
         info_index = incremental
         cost_per_bed = random_float(10, 76) #Generates random float between 10 and 75 inclusive
         seed = random.random() # Generates random float between 0 and 1 non inclusive
@@ -38,8 +50,30 @@ def generate_RHU(num):
         emergency_capacity = random.randint(1, 3)
         short_term_beds = random.randint(1, 3)
         location_index = incremental
-        notes_key = incremental
-        rhu_layout = [info_index, cost_per_bed, capacity, emergency_capacity, short_term_beds, location_index, notes_key]
+        rhu_layout = [info_index, cost_per_bed, capacity, emergency_capacity, short_term_beds, location_index]
+        rhu_list.append(rhu_layout)
+
+def generate_POI(num):
+    index_start = rhu_list[-1][0]
+    for incrimental in range(1, num):
+        info_index = incrimental + index_start
+        place_significance = place_significance_dataset[random.randint(0, 3)]
+        poi_layout = [info_index, place_significance]
+        poi_list.append(poi_layout)
+
+def generate_locations(num):
+    incrimental = 2
+    for rhu in rhu_list:
+        location_key = incrimental
+        location_type = "RHU"
+        contact_key = incrimental
+        co_ordinates = [random_float(0, 700), random_float(0, 700)]
+        info_key = rhu[0]
+        notes_key = incrimental
+        location_layout = [location_key, location_type, contact_key, co_ordinates, info_key, notes_key]
+        location_list.append(location_layout)
+        incrimental += 1
+        
 
 
 
