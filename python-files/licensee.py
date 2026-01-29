@@ -84,4 +84,3 @@ class Licensee:
     def set_category(self, new_category): #Setter for category
         assert type(new_category) == str, "Set category failed because input is not of string type" #Checks if input is of string type
         self.__category = new_category
- 
