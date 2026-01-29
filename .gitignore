@@ -10,3 +10,5 @@ data/rhu.csv
 data/poi.csv
 data/locations.csv
 data/contact.csv
+
+venv
