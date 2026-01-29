@@ -1,4 +1,2 @@
 #CODE BY LEO MCCAFFERTY W24046037
 #main.py
-
-from 
