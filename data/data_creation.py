@@ -71,14 +71,14 @@ key = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 categories = ["pending", "allocated", "exited"]
 ID_list = []
 
-def generate_ID():
+def generate_ID(Used_ID_list):
     ID = ""
     unique = False
     while not unique:
         for i in range (0, 5):
             random_num = random.randint(0, 34)
             ID += key[random_num]
-        if ID not in ID_list:
+        if ID not in Used_ID_list:
             unique = True
             ID_list.append(ID)
     return ID
@@ -203,7 +203,7 @@ def populate_with_licensees(num):
         address = generate_address()
         phone_number = generate_phone_number()
         email = generate_email(contact)
-        licensee_id = generate_ID()
+        licensee_id = generate_ID(ID_list)
         contact_list.append([contact_key, contact, address, phone_number, email, location_key, licensee_id])
         dates = generate_dates()
         license_end_date = dates[1]
