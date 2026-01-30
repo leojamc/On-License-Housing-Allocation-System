@@ -16,3 +16,10 @@ venv
 
 python-files/__pycache__/
 data/__pycache__/
+data/exclusions.csv
+data/exclusions/Associate.csv
+data/exclusions/General.csv
+data/exclusions/Other.csv
+data/exclusions/School.csv
+data/exclusions/Prisoner.csv
+data/exclusions/Victim.csv
