@@ -144,7 +144,7 @@ def generate_RHU(num):
             capacity = random.randint(3, 10)
         emergency_capacity = random.randint(1, 2)
         short_term_beds = random.randint(1, 2)
-        location_index = incremental
+        location_index = incremental + 1
         rhu_layout = [info_index, cost_per_bed, capacity, emergency_capacity, short_term_beds, location_index]
         rhu_list.append(rhu_layout)
 
