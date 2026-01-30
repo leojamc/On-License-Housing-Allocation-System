@@ -12,3 +12,5 @@ data/locations.csv
 data/contact.csv
 
 venv
+
+python-files/__pycache__
