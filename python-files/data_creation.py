@@ -233,6 +233,294 @@ def populate_with_licensees(num):
         category = categories[random_val]
         licensee_list.append([licensee_id, license_end_date, gender, sex, category, dates[0]])
 
+def licensee_location_mapper(num_of_rhu):
+    for location in location_list:
+        if location[1] == "Licensee":
+            location[4] = random.randint(1, num_of_rhu-1)
+
+def generate_bool_seed(length):
+    string = ""
+    for i in range(0, length):
+        if random.random() <0.5:
+            string += "0"
+        else:
+            string += "1"
+    return string
+
+suitability_template = ["", 0, False, False, 0, 0, 0, False, False, 0, False, 0, False, False, False, False, False, False, False, False, False, 0, False, False, False] #licensee_id, RHU_ID, Night Cir, Weekend cur, victim exc, school exc, prisoner exc, Disability, Accesibility, 
+suitability_row = []
+def generate_licensee_factors():
+    for licensee in licensee_list:
+        id = licensee[0]
+        seed = generate_bool_seed(17)
+        print(seed[0])
+        if seed[0] == "0":
+            bool_1 = True
+        else:
+            bool_1 = False
+        if seed[1] == "0":
+            bool_2 = True
+        else:
+            bool_2 = False
+        exclusion = "Victim"
+        if random.random() < 0.25:
+            generate_exclusion_table(exclusion, generate_exclusionary_data(exclusion, 5))
+            for entry in index_entry:
+                if entry[0] == exclusion:
+                    victim_index = entry[1]
+        else:
+            victim_index = -1
+        exclusion = "School"
+        if random.random() < 0.1:
+            generate_exclusion_table(exclusion, generate_exclusionary_data(exclusion, 5))
+            for entry in index_entry:
+                if entry[0] == exclusion:
+                    school_index = entry[1]
+        else:
+            school_index = -1
+        exclusion = "Prisoner"
+        if random.random() < 0.25:
+            generate_exclusion_table(exclusion, generate_exclusionary_data(exclusion, 5))#
+            for entry in index_entry:
+                if entry[0] == exclusion:
+                    prisoner_index = entry[1]
+        else:
+            prisoner_index = -1
+        if seed[2] == "0":
+            bool_3 = True
+        else:
+            bool_3 = False
+        if seed[3] == "0":
+            bool_4 = True
+        else:
+            bool_4 = False
+        exclusion = "General"
+        if random.random() < 0.25:
+            generate_exclusion_table(exclusion, generate_exclusionary_data(exclusion, 5))
+            for entry in index_entry:
+                if entry[0] == exclusion:
+                    general_index = entry[1]
+        else:
+            general_index = -1
+        if seed[4] == "0":
+            bool_5 = True
+        else:
+            bool_5 = False
+        exclusion = "Associate"
+        if random.random() < 0.25:
+            generate_exclusion_table(exclusion, generate_exclusionary_data(exclusion, 5))
+            for entry in index_entry:
+                if entry[0] == exclusion:
+                    associate_index = entry[1]
+        else:
+            associate_index = -1
+        if seed[5] == "0":
+            bool_6 = True
+        else:
+            bool_6 = False
+        if seed[6] == "0":
+            bool_7 = True
+        else:
+            bool_7 = False
+        if seed[7] == "0":
+            bool_8 = True
+        else:
+            bool_8 = False
+        if seed[8] == "0":
+            bool_9 = True
+        else:
+            bool_9 = False
+        if seed[9] == "0":
+            bool_10 = True
+        else:
+            bool_10 = False
+        if seed[10] == "0":
+            bool_11 = True
+        else:
+            bool_11 = False
+        if seed[11] == "0":
+            bool_12 = True
+        else:
+            bool_12 = False
+        if seed[12] == "0":
+            bool_13 = True
+        else:
+            bool_13 = False
+        if seed[13] == "0":
+            bool_14 = True
+        else:
+            bool_14 = False
+        exclusion = "Other"
+        if random.random() < 0.25:
+            generate_exclusion_table(exclusion, generate_exclusionary_data(exclusion, 5))
+            for entry in index_entry:
+                if entry[0] == exclusion:
+                    other_index = entry[1]
+        else:
+            other_index = -1
+        if seed[14] == "0":
+            bool_15 = True
+        else:
+            bool_15 = False
+        if seed[15] == "0":
+            bool_16 = True
+        else:
+            bool_16 = False
+        if seed[16] == "0":
+            bool_17 = True
+        else:
+            bool_17 = False
+        print(bool_1)
+        suitability_row.append([id, -1, bool_1, bool_2, victim_index, school_index, prisoner_index, bool_3, bool_4, general_index, bool_5, associate_index, bool_6, bool_7, bool_8, bool_9, bool_10, bool_11, bool_12, bool_13, bool_14, other_index, bool_15, bool_16, bool_17])
+
+def populate_rhus():
+    for rhu in rhu_list:
+        id = rhu[0]
+        seed = generate_bool_seed(17)
+        print(seed[0])
+        if seed[0] == "0":
+            bool_1 = True
+        else:
+            bool_1 = False
+        if seed[1] == "0":
+            bool_2 = True
+        else:
+            bool_2 = False
+        if seed[2] == "0":
+            bool_3 = True
+        else:
+            bool_3 = False
+        if seed[3] == "0":
+            bool_4 = True
+        else:
+            bool_4 = False
+        if seed[4] == "0":
+            bool_5 = True
+        else:
+            bool_5 = False
+        if seed[5] == "0":
+            bool_6 = True
+        else:
+            bool_6 = False
+        if seed[6] == "0":
+            bool_7 = True
+        else:
+            bool_7 = False
+        if seed[7] == "0":
+            bool_8 = True
+        else:
+            bool_8 = False
+        if seed[8] == "0":
+            bool_9 = True
+        else:
+            bool_9 = False
+        if seed[9] == "0":
+            bool_10 = True
+        else:
+            bool_10 = False
+        if seed[10] == "0":
+            bool_11 = True
+        else:
+            bool_11 = False
+        if seed[11] == "0":
+            bool_12 = True
+        else:
+            bool_12 = False
+        if seed[12] == "0":
+            bool_13 = True
+        else:
+            bool_13 = False
+        if seed[13] == "0":
+            bool_14 = True
+        else:
+            bool_14 = False
+        if seed[14] == "0":
+            bool_15 = True
+        else:
+            bool_15 = False
+        if seed[15] == "0":
+            bool_16 = True
+        else:
+            bool_16 = False
+        if seed[16] == "0":
+            bool_17 = True
+        else:
+            bool_17 = False
+        print(bool_1)
+        suitability_row.append([-1, id, bool_1, bool_2, -1, -1, -1, bool_3, bool_4, -1, bool_5, -1, bool_6, bool_7, bool_8, bool_9, bool_10, bool_11, bool_12, bool_13, bool_14, -1, bool_15, bool_16, bool_17])
+
+
+exclusions_list = []
+def generate_exclusion_table(exclusion, exclusions):
+    header = [exclusion, "POI's included..."]
+    exclusions_list.append([header, exclusions])
+
+index_entry = []
+def generate_exclusionary_data(exclusion, max_amount):
+    index = 1
+    appended = False
+    for entry in index_entry:
+        if entry[0] == exclusion:
+            index = entry[1]+1
+            entry[1] = index
+            appended = True
+    if appended != True:
+            index_entry.append([exclusion, 1])        
+    if len(index_entry) == 0:
+            index_entry.append([exclusion, 1])     
+    exclusion_list = []
+    exclusion_list.append(exclusion)
+    for poi in poi_list:
+        if poi[1] == exclusion:
+            exclusion_list.append(poi[0])
+    amount = random.randint(1, max_amount)
+    chosen_list = []
+    chosen_list.append(index)
+    for i in range(0, amount):
+        valid = False
+        while not valid:
+            random_val = random.randint(1, len(exclusion_list)-1)
+            if exclusion_list[random_val] not in chosen_list:
+                chosen_list.append(exclusion_list[random_val])
+                valid = True
+    return chosen_list
+        
+
+def generate_exclusionary_poi(exclusion, max):
+    index = poi_list[-1][0] + 1
+    index_2 = location_list[-1][0] + 1
+    for i in range(0, random.randint(1, max)):
+        exc_poi = [index, exclusion]
+        poi_list.append(exc_poi)
+        location_list.append([index_2, "POI", [random_float(0, 700, 4), random_float(0, 700, 4)], index, index_2])
+        index += 1
+        index_2 += 1
+
+def generate_exclusions():
+    exclusion = "Victim"
+    generate_exclusionary_poi(exclusion, 750)
+    exclusion = "School"
+    generate_exclusionary_poi(exclusion, 25)
+    exclusion = "Prisoner"
+    generate_exclusionary_poi(exclusion, 250)
+    exclusion = "General"
+    generate_exclusionary_poi(exclusion, 25)
+    exclusion = "Associate"
+    generate_exclusionary_poi(exclusion, 500)
+    exclusion = "Other"
+    generate_exclusionary_poi(exclusion, 50)
+
+def write_exclusion_tables(exclusions_list):
+    for i in range(0, 6):
+        with open("data/exclusions/"+exclusions_list[i][0][0]+".csv", "w") as csvfile:
+            writecsv = csv.writer(csvfile)
+            final_rows = [exclusions_list[i][0]]
+            for row in exclusions_list:
+                if row[0][0] == exclusions_list[i][0][0]:
+                    final_rows.append(row[1])
+            writecsv.writerows(final_rows)        
+
+
 
 def write_data():
     header = ["Info Key", "Cost Per Bed", "Capacity", "Emergency Capacity", "Short term beds", "Location", "Notes Key"]
@@ -260,11 +548,21 @@ def write_data():
         writecsv = csv.writer(csvfile)
         writecsv.writerow(header)
         writecsv.writerows(licensee_list)
+    write_exclusion_tables(exclusions_list)
+    header = ["Licensee ID", "RHU ID", "Night Curfew", "Weekend Curfew", "Victim Exclusion Zone", "School Exclusion Zone", "Prisoner Exclusion Zone", "Disability", "Accsessibility", "General Exclusion Zone", "Drug Searches", "Associate Exclusion", "Young Offender Suitable", "Medical Service Access", "Transport Links", "Cultural/Religious Needs", "Mental Health Exclusions", "Gender Exclusion", "Access to family", "Prior RHU Experience", "Job Opportunities", "Other POI", "Set License Period", "Gender Support Services Nearby", "Education Servies"]
+    with open("data/exclusions.csv", "w") as csvfile:
+        writecsv = csv.writer(csvfile)
+        writecsv.writerow(header)
+        writecsv.writerows(suitability_row)
 
 generate_RHU(300)
 generate_POI(45)
 generate_locations()
 generate_contact_info()
 populate_with_licensees(4000)
+licensee_location_mapper(300)
+generate_exclusions()
+generate_licensee_factors()
+populate_rhus()
 
 write_data()
