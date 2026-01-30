@@ -15,3 +15,4 @@ data/licensee.csv
 venv
 
 python-files/__pycache__/
+data/__pycache__/
