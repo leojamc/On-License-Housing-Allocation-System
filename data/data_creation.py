@@ -24,6 +24,7 @@
 
 import random
 import csv
+import datetime
 
 def random_float(lower_boundary, upper_boundary, dp):
     integer_element = random.randint(lower_boundary, upper_boundary)
@@ -40,8 +41,11 @@ poi_list = []
 #location_layout = list(0, "", 0, [0,0], 0, 0) #Location key, Location type, contact key, co-ordinates, info key, notes key
 location_list = []
 
-#contact_layout = list(0, "", "", "", "", 0) #Contact key, Contact, Address, Phone number, Email, Location Entry
+#contact_layout = list(0, "", "", "", "", 0) #Contact key, Contact, Address, Phone number, Email, Location Entry, LicenseeID
 contact_list = []
+
+#Licensee_layout = list("", datetime.date, "", "", "", datetime.date) #LicenseeID, License End, Gender, Sex, Category, Prison Release
+licensee_list = []
 
 durham_prison_poi = [1, "Prison"]
 poi_list.append(durham_prison_poi)
@@ -63,6 +67,28 @@ with open("data/name_address_dataset.csv", "r", encoding='utf-8') as file: #Inpu
         surname_list.append(stripped_line[1])
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+key = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+categories = ["pending", "allocated", "exited"]
+ID_list = []
+
+def generate_ID():
+    ID = ""
+    unique = False
+    while not unique:
+        for i in range (0, 5):
+            random_num = random.randint(0, 34)
+            ID += key[random_num]
+        if ID not in ID_list:
+            unique = True
+            ID_list.append(ID)
+    return ID
+
+def generate_dates():
+    release_day = random.randint(1, 30)
+    release_month = random.randint(8, 12)
+    release_date = datetime.date(2025, release_month, release_day)
+    license_end_date = release_date + datetime.timedelta(days = 186)
+    return [release_date, license_end_date]
 
 def generate_email(name):
     email = ""
@@ -177,7 +203,36 @@ def populate_with_licensees(num):
         address = generate_address()
         phone_number = generate_phone_number()
         email = generate_email(contact)
-        contact_list.append([contact_key, contact, address, phone_number, email, location_key])
+        licensee_id = generate_ID()
+        contact_list.append([contact_key, contact, address, phone_number, email, location_key, licensee_id])
+        dates = generate_dates()
+        license_end_date = dates[1]
+        random_val = random.random()
+        if random_val < 0.475:
+            gender = "Man"
+            random_val = random.random()
+            if random_val < 0.95:
+                sex = "Man"
+            else:
+                sex = "Woman"
+        elif random_val < 0.95:
+            gender = "Woman"
+            random_val = random.random()
+            if random_val < 0.95:
+                sex = "Woman"
+            else:
+                sex = "Man"
+        else:
+            gender = "Non-binary"
+            random_val = random.random()
+            if random_val < 0.5:
+                sex = "Man"
+            else:
+                sex = "Woman"
+        random_val = random.randint(0, 2)
+        category = categories[random_val]
+        licensee_list.append([licensee_id, license_end_date, gender, sex, category, dates[0]])
+
 
 def write_data():
     header = ["Info Key", "Cost Per Bed", "Capacity", "Emergency Capacity", "Short term beds", "Location", "Notes Key"]
@@ -195,11 +250,16 @@ def write_data():
         writecsv = csv.writer(csvfile)
         writecsv.writerow(header)
         writecsv.writerows(location_list)   
-    header = ["Contact Entry", "Contact", "Address", "Phone number", "Email address", "Location Entry"]
+    header = ["Contact Entry", "Contact", "Address", "Phone number", "Email address", "Location Entry", "Licensee ID"]
     with open("data/contact.csv", "w") as csvfile:
         writecsv = csv.writer(csvfile)
         writecsv.writerow(header)
-        writecsv.writerows(contact_list)   
+        writecsv.writerows(contact_list)
+    header = ["Licensee ID", "License End", "Gender", "Sex", "Category", "Prison Release"]   
+    with open("data/licensee.csv", "w") as csvfile:
+        writecsv = csv.writer(csvfile)
+        writecsv.writerow(header)
+        writecsv.writerows(licensee_list)
 
 generate_RHU(300)
 generate_POI(45)
