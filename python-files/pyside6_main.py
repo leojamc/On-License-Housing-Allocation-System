@@ -1,5 +1,6 @@
 #CODE BY LEO MCCAFFERTY W24046037
 #pyside6_main.py
+#RUN THIS FILE
 import sys
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QLineEdit, QDialog, QDialogButtonBox, QLabel, QStackedLayout, QHBoxLayout, QDateEdit, QCheckBox, QComboBox, QTableWidget, QTableWidgetItem
