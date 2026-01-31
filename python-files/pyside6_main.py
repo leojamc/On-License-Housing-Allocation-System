@@ -2,12 +2,12 @@
 #pyside6_main.py
 import sys
 from PySide6.QtCore import QSize, Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QLineEdit, QDialog, QDialogButtonBox, QLabel, QStackedLayout, QHBoxLayout, QDateEdit, QCheckBox, QComboBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QLineEdit, QDialog, QDialogButtonBox, QLabel, QStackedLayout, QHBoxLayout, QDateEdit, QCheckBox, QComboBox, QTableWidget, QTableWidgetItem
 
 import main
 import datetime
 from main import check_login
-from data_handling import register_offender, edit_offender, query_line, find_in, get_ID, set_ID
+from data_handling import register_offender, edit_offender, query_line, find_in, get_ID, set_ID, register_rhu, edit_rhu
 
 offender_id_storage = ""
 licensee_list_storage = ["", datetime.date(2000, 2, 2), "", "", "", datetime.date(2000, 2, 2)]
@@ -38,6 +38,8 @@ class MainWindow(QMainWindow):
         self.__main_menu = MainMenu()
         self.__main_menu.register_button.clicked.connect(self.__main_menu.click_register_offender)
         self.__main_menu.edit_offender.clicked.connect(self.__main_menu.click_edit_offender)
+        self.__main_menu.rhu_button.clicked.connect(self.__main_menu.click_register_rhu)
+
         self.stacklayout.addWidget(self.__main_menu.get_widget())
 
         self.__register_offender = registerOffender()
@@ -50,6 +52,11 @@ class MainWindow(QMainWindow):
         self.__edit_offender.back_button.clicked.connect(self.__edit_offender.click_back)
         self.stacklayout.addWidget(self.__edit_offender.get_widget())
 
+        self.__register_rhu = registerRHU()
+        self.__register_rhu.submit_button.clicked.connect(self.__register_rhu.click_submit)
+        self.__register_rhu.back_button.clicked.connect(self.__register_rhu.click_back)
+        self.stacklayout.addWidget(self.__register_rhu.get_widget())
+
 
         if self.__screen == "login":
             self.stacklayout.setCurrentIndex(0)
@@ -59,6 +66,8 @@ class MainWindow(QMainWindow):
             self.stacklayout.setCurrentIndex(2)
         elif self.__screen == "edit_offender":
             self.stacklayout.setCurrentIndex(3)
+        elif self.__screen == "register_rhu":
+            self.stacklayout.setCurrentIndex(4)
         widget = QWidget()
         widget.setLayout(self.stacklayout)
         self.setCentralWidget(widget)
@@ -140,14 +149,14 @@ class MainMenu:
         self.__data_buttons_layout.addWidget(subtitle)
         self.register_button = QPushButton("Register Offender")
         self.edit_offender = QPushButton("Edit Offender Details")
-        rhu_button = QPushButton("Register new RHU")
-        edit_rhu_button = QPushButton("Edit existing RHU")
+        self.rhu_button = QPushButton("Register new RHU")
+        self.edit_rhu_button = QPushButton("Edit existing RHU")
         poi_button = QPushButton("Register new POI")
         edit_poi_button = QPushButton("Edit existing POI")
         self.__data_buttons_layout.addWidget(self.register_button)
         self.__data_buttons_layout.addWidget(self.edit_offender)
-        self.__data_buttons_layout.addWidget(rhu_button)
-        self.__data_buttons_layout.addWidget(edit_rhu_button)
+        self.__data_buttons_layout.addWidget(self.rhu_button)
+        self.__data_buttons_layout.addWidget(self.edit_rhu_button)
         self.__data_buttons_layout.addWidget(poi_button)
         self.__data_buttons_layout.addWidget(edit_poi_button)
         data_buttons_widget = QWidget()
@@ -223,6 +232,9 @@ class MainMenu:
 
     def click_edit_offender(self):
         window.update_window("edit_offender")
+
+    def click_register_rhu(self):
+        window.update_window("register_rhu")
 
     def get_widget(self):
         return self.__widget
@@ -337,16 +349,134 @@ class editOffender:
     def click_submit(self):
         self.offender_id = self.ID.text()
         self.contact_id = query_line("data/contact.csv", find_in("data/contact.csv", 6, self.offender_id))[0]
-        self.location_id = query_line("data/contact.csv", find_in("data/contact.csv", 6, self.offender_id))[5]
+        self.location_id = query_line("data/locations.csv", find_in("data/locations.csv", 6, self.contact_id))[2]
         #Validate here
         licensee_details = [self.offender_id, str_to_date(self.license_end.textFromDateTime(self.license_end.dateTime())), self.gender.text(), str(self.sex.currentText()), str(self.category.currentText()), str_to_date(self.release_date.textFromDateTime(self.release_date.dateTime()))] 
         contact_details = [self.contact_id, self.name.text(), self.address.text(), self.phone.text(), self.email.text(), self.location_id, self.offender_id]
         edit_offender(self.offender_id, licensee_details, contact_details)
+    def click_back(self):
+        window.update_window("main")
+    def get_widget(self):
+        return self.__widget
+    
+class registerRHU:
+    def __init__(self):
+        self.__layout = QVBoxLayout()
+
+        title = QLabel("Register RHU")
+        title.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.__layout.addWidget(title)
+
+        self.cpb = QLineEdit()
+        self.cpb.setPlaceholderText("Cost Per bed")
+        self.__layout.addWidget(self.cpb)
+        self.capacity = QLineEdit()
+        self.capacity.setPlaceholderText("Capacity")
+        self.__layout.addWidget(self.capacity)
+        self.em_capacity = QLineEdit()
+        self.em_capacity.setPlaceholderText("Emergency Capacity")
+        self.__layout.addWidget(self.em_capacity)
+        self.stb = QLineEdit()
+        self.stb.setPlaceholderText("Short Term Beds")
+        self.__layout.addWidget(self.stb)
+        self.name = QLineEdit()
+        self.name.setPlaceholderText("RHU Manager Name")
+        self.__layout.addWidget(self.name)
+        self.address = QLineEdit()
+        self.address.setPlaceholderText("Address, HOUSENUM+STREETNAME/CITY/POSTCODE")
+        self.__layout.addWidget(self.address)
+        self.phone = QLineEdit()
+        self.phone.setPlaceholderText("Phone number, LOCATIONCODE0XXXXXXXXXX")
+        self.__layout.addWidget(self.phone)
+        self.email = QLineEdit()
+        self.email.setPlaceholderText("Email address")
+        self.__layout.addWidget(self.email)
+        self.co_ord = QLineEdit()
+        self.co_ord.setPlaceholderText("Co_ordinates, (XX, XX)")
+        self.__layout.addWidget(self.co_ord)
+        self.submit_button = QPushButton("Submit")
+        self.__layout.addWidget(self.submit_button)
+        self.back_button = QPushButton("Back")
+        self.__layout.addWidget(self.back_button)
+        #license_end, gender, sex, category, release,  name, address, phone, email
+        self.__widget = QWidget()
+        self.__widget.setLayout(self.__layout)
+    def click_submit(self):
+        #Validate here
+        co_ordinates = self.co_ord.text()
+        co_ordinates_list = co_ordinates.split(",")
+        rhu_details = [self.cpb.text(), self.capacity.text(), self.em_capacity.text(), self.stb.text()]
+        contact_details = [self.name.text(), self.address.text(), self.phone.text(), self.email.text()]
+        register_rhu(rhu_details, contact_details, co_ordinates_list)
         print("Data submitted")
     def click_back(self):
         window.update_window("main")
     def get_widget(self):
         return self.__widget
+    
+class editRHU:
+    def __init__(self):
+        self.__layout = QVBoxLayout()
+
+        title = QLabel(f"Edit Offender")
+        title.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.__layout.addWidget(title)
+
+        self.ID = QLineEdit()
+        self.ID.setPlaceholderText("ID")
+        self.__layout.addWidget(self.ID)
+
+        sub_text1 = QLabel("Prison Release date")
+        self.__layout.addWidget(sub_text1)
+        self.release_date = QDateEdit()
+        self.__layout.addWidget(self.release_date)
+        sub_text2 = QLabel("Expected end of license")
+        self.__layout.addWidget(sub_text2)
+        self.license_end = QDateEdit()
+        self.__layout.addWidget(self.license_end)
+        self.gender = QLineEdit()
+        self.gender.setPlaceholderText("Gender")
+        self.__layout.addWidget(self.gender)
+        self.sex = QComboBox()
+        self.sex.setPlaceholderText("Sex")
+        self.sex.addItems(["Male", "Female"])
+        self.__layout.addWidget(self.sex)
+        self.category = QComboBox()
+        self.category.setPlaceholderText("Category")
+        self.category.addItems(["pending", "allocated", "exited"])
+        self.__layout.addWidget(self.category)
+        self.name = QLineEdit()
+        self.name.setPlaceholderText("Full Name")
+        self.__layout.addWidget(self.name)
+        self.address = QLineEdit()
+        self.address.setPlaceholderText("Address, HOUSENUM+STREETNAME/CITY/POSTCODE")
+        self.__layout.addWidget(self.address)
+        self.phone = QLineEdit()
+        self.phone.setPlaceholderText("Phone number, LOCATIONCODE0XXXXXXXXXX")
+        self.__layout.addWidget(self.phone)
+        self.email = QLineEdit()
+        self.email.setPlaceholderText("Email address")
+        self.__layout.addWidget(self.email)
+        self.submit_button = QPushButton("Submit")
+        self.__layout.addWidget(self.submit_button)
+        self.back_button = QPushButton("Back")
+        self.__layout.addWidget(self.back_button)
+
+        self.__widget = QWidget()
+        self.__widget.setLayout(self.__layout)       
+    def click_submit(self):
+        self.offender_id = self.ID.text()
+        self.contact_id = query_line("data/contact.csv", find_in("data/contact.csv", 6, self.offender_id))[0]
+        self.location_id = query_line("data/locations.csv", find_in("data/locations.csv", 6, self.contact_id))[2]
+        #Validate here
+        licensee_details = [self.offender_id, str_to_date(self.license_end.textFromDateTime(self.license_end.dateTime())), self.gender.text(), str(self.sex.currentText()), str(self.category.currentText()), str_to_date(self.release_date.textFromDateTime(self.release_date.dateTime()))] 
+        contact_details = [self.contact_id, self.name.text(), self.address.text(), self.phone.text(), self.email.text(), self.location_id, self.offender_id]
+        edit_offender(self.offender_id, licensee_details, contact_details)
+    def click_back(self):
+        window.update_window("main")
+    def get_widget(self):
+        return self.__widget
+
 
 def str_to_date(str):
     split = str.split("/")

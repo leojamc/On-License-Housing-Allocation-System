@@ -179,8 +179,10 @@ def generate_locations():
         incrimental += 1      
 
 def generate_contact_info():
+    incrimental = 2
     for location in location_list:
-        contact_key = location[2]
+        contact_key = incrimental
+        incrimental += 1
         contact = generate_name()
         address = generate_address()
         phone_number = generate_phone_number()
@@ -492,7 +494,7 @@ def generate_exclusionary_poi(exclusion, max):
     for i in range(0, random.randint(1, max)):
         exc_poi = [index, exclusion]
         poi_list.append(exc_poi)
-        location_list.append([index_2, "POI", [random_float(0, 700, 4), random_float(0, 700, 4)], index, index_2])
+        location_list.append([index_2, "POI", index_2, [random_float(0, 700, 4), random_float(0, 700, 4)], index, index_2])
         index += 1
         index_2 += 1
 
@@ -554,15 +556,15 @@ def write_data():
         writecsv = csv.writer(csvfile)
         writecsv.writerow(header)
         writecsv.writerows(suitability_row)
-
-generate_RHU(300)
-generate_POI(45)
-generate_locations()
-generate_contact_info()
-populate_with_licensees(4000)
-licensee_location_mapper(300)
-generate_exclusions()
-generate_licensee_factors()
-populate_rhus()
-
-write_data()
+generate_data = False
+if generate_data == True:
+    generate_RHU(300)
+    generate_POI(45)
+    generate_locations()
+    generate_contact_info()
+    populate_with_licensees(4000)
+    licensee_location_mapper(300)
+    generate_exclusions()
+    generate_licensee_factors()
+    populate_rhus()
+    write_data()

@@ -7,3 +7,5 @@ def check_login(login_attempt):
         return True
     else:
         return False
+    
+from data_handling import register_offender
