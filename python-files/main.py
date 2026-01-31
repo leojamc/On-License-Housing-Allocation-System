@@ -9,3 +9,5 @@ def check_login(login_attempt):
         return False
     
 from data_handling import register_offender
+
+#RUN pyside6_main.py

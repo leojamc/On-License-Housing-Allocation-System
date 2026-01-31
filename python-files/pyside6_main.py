@@ -1,6 +1,12 @@
 #CODE BY LEO MCCAFFERTY W24046037
 #pyside6_main.py
 #RUN THIS FILE
+#You will have to have the correct file layout and have generated data for this to run
+#File layout is as follows
+#ASSIGNMENTFOLDER/python-files ALL .PY FILES to go in this folder
+#ASSIGNMENTFOLDER/data   data will be generated in this folder
+#ASSIGNMENTFOLDER/data/exclusions exclusion data generated in this folder
+#If file layout is correct, running data_creation.py will populate the data folder with randomly generated data
 import sys
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QLineEdit, QDialog, QDialogButtonBox, QLabel, QStackedLayout, QHBoxLayout, QDateEdit, QCheckBox, QComboBox, QTableWidget, QTableWidgetItem
