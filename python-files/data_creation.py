@@ -556,8 +556,7 @@ def write_data():
         writecsv = csv.writer(csvfile)
         writecsv.writerow(header)
         writecsv.writerows(suitability_row)
-generate_data = False
-if generate_data == True:
+def data_generation():
     generate_RHU(300)
     generate_POI(45)
     generate_locations()

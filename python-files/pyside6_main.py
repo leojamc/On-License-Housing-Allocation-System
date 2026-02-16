@@ -11,14 +11,19 @@ import sys
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout, QLineEdit, QDialog, QDialogButtonBox, QLabel, QStackedLayout, QHBoxLayout, QDateEdit, QCheckBox, QComboBox, QTableWidget, QTableWidgetItem
 
-import main
 import datetime
-from main import check_login
 from data_handling import register_offender, edit_offender, query_line, find_in, get_ID, set_ID, register_rhu, edit_rhu
 
 offender_id_storage = ""
 licensee_list_storage = ["", datetime.date(2000, 2, 2), "", "", "", datetime.date(2000, 2, 2)]
 contact_list_storage = [0, "", "", "", "", 0, ""]
+
+correct_login = "DRHM45" #Password for logging in
+def check_login(login_attempt):
+    if login_attempt == correct_login:
+        return True
+    else:
+        return False
 
 class MainWindow(QMainWindow):
     """
